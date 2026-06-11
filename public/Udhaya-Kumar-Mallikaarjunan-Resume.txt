@@ -1,0 +1,54 @@
+Udhaya Kumar Mallikaarjunan
+Software Technologist
+India
+udhayakumarmallikaarjunan@gmail.com
+LinkedIn: https://www.linkedin.com/in/udhaya-kumar-mallikaarjunan-669021113/
+
+SUMMARY
+Software Technologist with 7+ years of experience building scalable full-stack,
+cloud-native, and distributed systems, with a strong focus on healthcare
+technology. Experience spans Java, Spring Boot, Angular, AWS, microservices,
+event-driven architecture, API integrations, testing, deployment, production
+support, and AI-assisted engineering workflows.
+
+CURRENT FOCUS
+- Healthcare platforms and workflow modernization
+- Cloud-native backend services and distributed systems
+- Angular and TypeScript frontend engineering
+- Event-driven architecture with messaging systems
+- Generative AI, Spring AI, RAG, MCP, AI agents, and prompt engineering
+
+EXPERIENCE
+Philips - Software Technologist II
+Feb 2024 - Present
+- Build cardiac monitoring, virtual care, ECG workflow, and healthcare data
+  integration platforms.
+- Work across Java, Spring Boot, Angular, AWS, REST and GraphQL APIs,
+  microservices, event-driven architecture, testing, and production support.
+- Contribute to secure authentication, CI/CD, containerized delivery, and
+  production-grade reliability practices.
+
+Carelon - Software Engineer II
+Sep 2021 - Feb 2024
+- Built enterprise healthcare applications for licensing, credentialing, and
+  broker oversight workflows.
+- Worked with Angular, Java, Spring Boot, Spring Batch, Kafka, AWS, SQL Server,
+  Docker, and CI/CD.
+- Supported modernization efforts for business-critical healthcare platforms.
+
+Virtusa - Associate Software Engineer
+May 2019 - Aug 2021
+- Worked on enterprise banking applications and Citi Private Banking
+  modernization.
+- Contributed to Flex-to-Angular migration, reusable UI components, REST API
+  integration, debugging, and production support.
+- Built a practical foundation in enterprise engineering, production support,
+  and cross-functional delivery.
+
+CORE SKILLS
+Java, Spring Boot, Angular, TypeScript, JavaScript, AWS, Microservices,
+REST APIs, GraphQL, Event-Driven Architecture, RabbitMQ, Kafka, SQS, SNS,
+MySQL, PostgreSQL, SQL Server, Spring Batch, Docker, Kubernetes, Azure DevOps,
+GitHub Actions, JUnit, Mockito, Testcontainers, Jasmine, Karma, SonarQube,
+Black Duck, CI/CD, Prompt Engineering, ChatGPT, Claude, GitHub Copilot, Codex,
+Spring AI, RAG, MCP, AI Agents.

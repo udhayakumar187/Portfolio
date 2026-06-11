@@ -1,0 +1,34 @@
+{
+  "name": "udhaya-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.6.1",
+    "framer-motion": "11.18.2",
+    "gsap": "3.12.7",
+    "lucide-react": "0.468.0",
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "three": "0.184.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.10",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "10.4.20",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.2.9",
+    "postcss": "8.5.10",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.2"
+  }
+}

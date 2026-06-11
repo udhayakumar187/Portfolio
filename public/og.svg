@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#030511"/>
+  <path d="M0 160C220 40 350 250 560 132C780 8 900 190 1200 80V630H0V160Z" fill="url(#mesh)" opacity="0.68"/>
+  <path d="M130 412C258 248 394 498 552 318C705 143 840 396 1048 212" stroke="url(#line)" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="236" cy="318" r="12" fill="#49D3FF"/>
+  <circle cx="552" cy="318" r="12" fill="#8B5CF6"/>
+  <circle cx="884" cy="284" r="12" fill="#7CF7D4"/>
+  <text x="96" y="190" fill="#F8FDFF" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="700">Udhaya Kumar</text>
+  <text x="96" y="272" fill="#F8FDFF" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="700">Mallikaarjunan</text>
+  <text x="100" y="352" fill="#9FEAFF" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="600">Software Technologist</text>
+  <text x="100" y="484" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="27">Healthcare platforms. Distributed systems. AI-assisted engineering.</text>
+  <defs>
+    <linearGradient id="mesh" x1="0" x2="1200" y1="0" y2="630">
+      <stop stop-color="#49D3FF" stop-opacity="0.45"/>
+      <stop offset="0.54" stop-color="#8B5CF6" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#7CF7D4" stop-opacity="0.28"/>
+    </linearGradient>
+    <linearGradient id="line" x1="130" x2="1048" y1="318" y2="318">
+      <stop stop-color="#49D3FF"/>
+      <stop offset="0.55" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#7CF7D4"/>
+    </linearGradient>
+  </defs>
+</svg>
