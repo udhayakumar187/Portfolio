@@ -1,8 +1,16 @@
+import { dayNightThemes, type DayNightPalette } from "@/data/dayNightThemes";
+
 export type ThemeId = "winter" | "desert" | "woods" | "ocean" | "spring";
 
 export type EnvironmentType = "winter" | "desert" | "woods" | "ocean" | "spring";
 export type TravelMode = "walk" | "camel" | "boat" | "bicycle";
 export type ParticleType = "snow" | "dust" | "fireflies" | "mist" | "petals";
+export type PortalTransitionType = "ice-vortex" | "sandstorm" | "forest-ring" | "wave-wash" | "petal-bloom";
+export type TrailType = "snow-footprints" | "camel-prints" | "boat-wake" | "crushed-grass" | "petal-trail";
+export type LivingTerrainType = "snow-compression" | "sand-disturbance" | "grass-bend" | "water-ripples" | "flower-bloom";
+export type CreatureType = "winter" | "desert" | "woods" | "ocean" | "spring";
+export type MapStyleType = "frost" | "parchment" | "topographic" | "nautical" | "floral";
+export type CursorEffectType = "frost" | "sand" | "fireflies" | "water" | "petals";
 
 export type ThemeConfig = {
   id: ThemeId;
@@ -12,6 +20,57 @@ export type ThemeConfig = {
   environmentType: EnvironmentType;
   travelMode: TravelMode;
   cssVars: Record<string, string>;
+  portalTransition: {
+    type: PortalTransitionType;
+    colors: [string, string, string];
+    particleType: ParticleType;
+    durationMs: number;
+  };
+  weather: {
+    type: ParticleType;
+    baseSpeed: number;
+    windMultiplier: number;
+    gustMultiplier: number;
+    countMultiplier: number;
+  };
+  constellation: {
+    primary: string;
+    secondary: string;
+    highlight: string;
+  };
+  trail: {
+    type: TrailType;
+    color: string;
+    accent: string;
+    particleColor: string;
+    lifetimeMs: number;
+  };
+  livingTerrain: {
+    type: LivingTerrainType;
+    color: string;
+    accent: string;
+  };
+  creatures: {
+    type: CreatureType;
+    color: string;
+    accent: string;
+  };
+  mapStyle: {
+    type: MapStyleType;
+    primary: string;
+    secondary: string;
+    glow: string;
+  };
+  cursorEffect: {
+    type: CursorEffectType;
+    primaryColor: string;
+    secondaryColor: string;
+    glowColor: string;
+    particleColor: string;
+    maxParticles: number;
+    rippleEnabled: boolean;
+  };
+  dayNightPalette: DayNightPalette;
   scene: {
     background: string;
     fog: string;
@@ -66,6 +125,57 @@ export const themes: Record<ThemeId, ThemeConfig> = {
       "--theme-bg-c": "rgba(159, 243, 213, 0.09)",
       "--theme-body-gradient": "linear-gradient(142deg, #020711 0%, #071625 39%, #10221d 72%, #020711 100%)"
     },
+    portalTransition: {
+      type: "ice-vortex",
+      colors: ["#e7faff", "#8eeaff", "#a78bfa"],
+      particleType: "snow",
+      durationMs: 1150
+    },
+    weather: {
+      type: "snow",
+      baseSpeed: 1,
+      windMultiplier: 1.55,
+      gustMultiplier: 1.25,
+      countMultiplier: 1
+    },
+    constellation: {
+      primary: "#8eeaff",
+      secondary: "#a78bfa",
+      highlight: "#e7faff"
+    },
+    trail: {
+      type: "snow-footprints",
+      color: "#dff8ff",
+      accent: "#8eeaff",
+      particleColor: "#f1fbff",
+      lifetimeMs: 7600
+    },
+    livingTerrain: {
+      type: "snow-compression",
+      color: "#b8d7ea",
+      accent: "#e7faff"
+    },
+    creatures: {
+      type: "winter",
+      color: "#dff8ff",
+      accent: "#8eeaff"
+    },
+    mapStyle: {
+      type: "frost",
+      primary: "#8eeaff",
+      secondary: "#a78bfa",
+      glow: "#e7faff"
+    },
+    cursorEffect: {
+      type: "frost",
+      primaryColor: "#e7faff",
+      secondaryColor: "#8eeaff",
+      glowColor: "#a7dfff",
+      particleColor: "#f4fbff",
+      maxParticles: 28,
+      rippleEnabled: true
+    },
+    dayNightPalette: dayNightThemes.winter,
     scene: {
       background: "#07101f",
       fog: "#07101f",
@@ -115,6 +225,57 @@ export const themes: Record<ThemeId, ThemeConfig> = {
       "--theme-bg-c": "rgba(255, 159, 63, 0.13)",
       "--theme-body-gradient": "linear-gradient(142deg, #100805 0%, #2a160d 42%, #3a2418 72%, #100805 100%)"
     },
+    portalTransition: {
+      type: "sandstorm",
+      colors: ["#fff1c7", "#f7b955", "#ff9f3f"],
+      particleType: "dust",
+      durationMs: 1120
+    },
+    weather: {
+      type: "dust",
+      baseSpeed: 0.86,
+      windMultiplier: 2.1,
+      gustMultiplier: 1.35,
+      countMultiplier: 0.92
+    },
+    constellation: {
+      primary: "#f7b955",
+      secondary: "#c084fc",
+      highlight: "#fff1c7"
+    },
+    trail: {
+      type: "camel-prints",
+      color: "#c78349",
+      accent: "#ffd89a",
+      particleColor: "#ffe3a2",
+      lifetimeMs: 7200
+    },
+    livingTerrain: {
+      type: "sand-disturbance",
+      color: "#b46e36",
+      accent: "#ffd89a"
+    },
+    creatures: {
+      type: "desert",
+      color: "#ffd89a",
+      accent: "#c084fc"
+    },
+    mapStyle: {
+      type: "parchment",
+      primary: "#ffd89a",
+      secondary: "#ff9f3f",
+      glow: "#fff1c7"
+    },
+    cursorEffect: {
+      type: "sand",
+      primaryColor: "#ffd89a",
+      secondaryColor: "#ff9f3f",
+      glowColor: "#f7b955",
+      particleColor: "#ffe3a2",
+      maxParticles: 46,
+      rippleEnabled: true
+    },
+    dayNightPalette: dayNightThemes.desert,
     scene: {
       background: "#231008",
       fog: "#2d190f",
@@ -164,6 +325,57 @@ export const themes: Record<ThemeId, ThemeConfig> = {
       "--theme-bg-c": "rgba(167, 243, 208, 0.1)",
       "--theme-body-gradient": "linear-gradient(142deg, #03100c 0%, #0a211b 42%, #112b21 72%, #03100c 100%)"
     },
+    portalTransition: {
+      type: "forest-ring",
+      colors: ["#e5fff2", "#6ee7b7", "#7dd3fc"],
+      particleType: "fireflies",
+      durationMs: 1180
+    },
+    weather: {
+      type: "fireflies",
+      baseSpeed: 0.72,
+      windMultiplier: 1.15,
+      gustMultiplier: 1.2,
+      countMultiplier: 1
+    },
+    constellation: {
+      primary: "#6ee7b7",
+      secondary: "#7dd3fc",
+      highlight: "#e5fff2"
+    },
+    trail: {
+      type: "crushed-grass",
+      color: "#2f7042",
+      accent: "#a7f3d0",
+      particleColor: "#d9ff8f",
+      lifetimeMs: 5600
+    },
+    livingTerrain: {
+      type: "grass-bend",
+      color: "#24693b",
+      accent: "#6ee7b7"
+    },
+    creatures: {
+      type: "woods",
+      color: "#d9ff8f",
+      accent: "#6ee7b7"
+    },
+    mapStyle: {
+      type: "topographic",
+      primary: "#6ee7b7",
+      secondary: "#7dd3fc",
+      glow: "#e5fff2"
+    },
+    cursorEffect: {
+      type: "fireflies",
+      primaryColor: "#d9ff8f",
+      secondaryColor: "#6ee7b7",
+      glowColor: "#34d399",
+      particleColor: "#e7ff9d",
+      maxParticles: 24,
+      rippleEnabled: false
+    },
+    dayNightPalette: dayNightThemes.woods,
     scene: {
       background: "#061811",
       fog: "#092016",
@@ -214,6 +426,57 @@ export const themes: Record<ThemeId, ThemeConfig> = {
       "--theme-bg-c": "rgba(94, 234, 212, 0.1)",
       "--theme-body-gradient": "linear-gradient(142deg, #02101d 0%, #08233b 42%, #063038 72%, #02101d 100%)"
     },
+    portalTransition: {
+      type: "wave-wash",
+      colors: ["#dffcff", "#67e8f9", "#5eead4"],
+      particleType: "mist",
+      durationMs: 1220
+    },
+    weather: {
+      type: "mist",
+      baseSpeed: 0.82,
+      windMultiplier: 1.85,
+      gustMultiplier: 1.3,
+      countMultiplier: 0.95
+    },
+    constellation: {
+      primary: "#67e8f9",
+      secondary: "#5eead4",
+      highlight: "#dffcff"
+    },
+    trail: {
+      type: "boat-wake",
+      color: "#bcf5ff",
+      accent: "#2dd4bf",
+      particleColor: "#c8fbff",
+      lifetimeMs: 4200
+    },
+    livingTerrain: {
+      type: "water-ripples",
+      color: "#67e8f9",
+      accent: "#5eead4"
+    },
+    creatures: {
+      type: "ocean",
+      color: "#c8fbff",
+      accent: "#38bdf8"
+    },
+    mapStyle: {
+      type: "nautical",
+      primary: "#67e8f9",
+      secondary: "#5eead4",
+      glow: "#dffcff"
+    },
+    cursorEffect: {
+      type: "water",
+      primaryColor: "#dffcff",
+      secondaryColor: "#67e8f9",
+      glowColor: "#5eead4",
+      particleColor: "#c8fbff",
+      maxParticles: 48,
+      rippleEnabled: true
+    },
+    dayNightPalette: dayNightThemes.ocean,
     scene: {
       background: "#041827",
       fog: "#05283a",
@@ -263,6 +526,57 @@ export const themes: Record<ThemeId, ThemeConfig> = {
       "--theme-bg-c": "rgba(250, 204, 21, 0.1)",
       "--theme-body-gradient": "linear-gradient(142deg, #100712 0%, #2a1327 42%, #21301e 72%, #100712 100%)"
     },
+    portalTransition: {
+      type: "petal-bloom",
+      colors: ["#fff3f8", "#f9a8d4", "#bbf7d0"],
+      particleType: "petals",
+      durationMs: 1160
+    },
+    weather: {
+      type: "petals",
+      baseSpeed: 0.88,
+      windMultiplier: 1.55,
+      gustMultiplier: 1.28,
+      countMultiplier: 0.94
+    },
+    constellation: {
+      primary: "#f9a8d4",
+      secondary: "#bbf7d0",
+      highlight: "#fff3f8"
+    },
+    trail: {
+      type: "petal-trail",
+      color: "#ffc4dd",
+      accent: "#bbf7d0",
+      particleColor: "#fff3f8",
+      lifetimeMs: 5000
+    },
+    livingTerrain: {
+      type: "flower-bloom",
+      color: "#f9a8d4",
+      accent: "#bbf7d0"
+    },
+    creatures: {
+      type: "spring",
+      color: "#ffc4dd",
+      accent: "#bbf7d0"
+    },
+    mapStyle: {
+      type: "floral",
+      primary: "#f9a8d4",
+      secondary: "#bbf7d0",
+      glow: "#fff3f8"
+    },
+    cursorEffect: {
+      type: "petals",
+      primaryColor: "#ffc4dd",
+      secondaryColor: "#bbf7d0",
+      glowColor: "#f9a8d4",
+      particleColor: "#fff3f8",
+      maxParticles: 50,
+      rippleEnabled: true
+    },
+    dayNightPalette: dayNightThemes.spring,
     scene: {
       background: "#1b1022",
       fog: "#2a1830",

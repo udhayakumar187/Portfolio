@@ -257,6 +257,81 @@ a {
       linear-gradient(18deg, color-mix(in srgb, var(--mint) 12%, transparent), transparent 38%);
   }
 
+  .magic-cursor-layer {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 78;
+    overflow: hidden;
+    contain: strict;
+    mix-blend-mode: screen;
+  }
+
+  .magic-cursor-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .season-portal {
+    backdrop-filter: blur(10px) saturate(130%);
+  }
+
+  .season-portal::before,
+  .season-portal::after {
+    content: "";
+    position: absolute;
+    inset: -10%;
+    pointer-events: none;
+  }
+
+  .season-portal::before {
+    opacity: 0.34;
+    mix-blend-mode: screen;
+    animation: portal-sweep 1.2s ease-in-out both;
+  }
+
+  .season-portal::after {
+    opacity: 0.2;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(circle at 50% 50%, black, transparent 66%);
+    animation: portal-grid-drift 1.3s ease-out both;
+  }
+
+  .season-portal--ice-vortex::before {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(231, 250, 255, 0.7), transparent 18%),
+      repeating-conic-gradient(from 25deg, rgba(142, 234, 255, 0.2) 0 12deg, transparent 12deg 28deg);
+  }
+
+  .season-portal--sandstorm::before {
+    background:
+      linear-gradient(100deg, transparent 10%, rgba(247, 185, 85, 0.38), transparent 64%),
+      repeating-linear-gradient(12deg, rgba(255, 216, 138, 0.18) 0 2px, transparent 2px 15px);
+    filter: blur(1px);
+  }
+
+  .season-portal--forest-ring::before {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(229, 255, 242, 0.44), transparent 16%),
+      repeating-conic-gradient(from 80deg, rgba(110, 231, 183, 0.24) 0 10deg, transparent 10deg 30deg);
+  }
+
+  .season-portal--wave-wash::before {
+    background:
+      radial-gradient(ellipse at 50% 52%, rgba(223, 252, 255, 0.48), transparent 20%),
+      repeating-radial-gradient(ellipse at 50% 52%, rgba(103, 232, 249, 0.18) 0 2px, transparent 2px 24px);
+  }
+
+  .season-portal--petal-bloom::before {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255, 243, 248, 0.48), transparent 18%),
+      repeating-conic-gradient(from 45deg, rgba(249, 168, 212, 0.22) 0 9deg, transparent 9deg 26deg);
+  }
+
   .fine-grid {
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
@@ -492,6 +567,474 @@ a {
   .theme-preview-spring span {
     background: #ffc4dd;
   }
+
+  .theme-globe-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .theme-globe-card {
+    position: relative;
+    min-height: 23rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: left;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.12), transparent 34%),
+      radial-gradient(circle at 50% 16%, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 36%),
+      rgba(7, 17, 29, 0.84);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 24px 72px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(22px) saturate(130%);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .theme-globe-card:hover,
+  .theme-globe-card:focus-visible {
+    transform: translateY(-0.25rem);
+    border-color: color-mix(in srgb, var(--cyan) 58%, white 8%);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.14), transparent 34%),
+      radial-gradient(circle at 50% 16%, color-mix(in srgb, var(--cyan) 24%, transparent), transparent 38%),
+      rgba(7, 17, 29, 0.88);
+  }
+
+  .theme-globe-card--active {
+    border-color: color-mix(in srgb, var(--cyan) 72%, white 10%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 0 46px color-mix(in srgb, var(--cyan) 28%, transparent),
+      0 26px 80px rgba(0, 0, 0, 0.42);
+  }
+
+  .theme-globe-card__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    min-height: 11rem;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .theme-globe-card__name,
+  .theme-globe-card__description,
+  .theme-globe-card__cta {
+    display: block;
+  }
+
+  .theme-globe-card__name {
+    font-size: 1.5rem;
+    font-weight: 650;
+    color: white;
+  }
+
+  .theme-globe-card__description {
+    min-height: 5.9rem;
+    margin-top: 0.75rem;
+    color: rgb(203 213 225);
+    font-size: 0.875rem;
+    line-height: 1.55rem;
+  }
+
+  .theme-globe-card__cta {
+    width: fit-content;
+    min-height: 2.75rem;
+    margin-top: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 650;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .theme-globe-card:hover .theme-globe-card__cta,
+  .theme-globe-card:focus-visible .theme-globe-card__cta {
+    border-color: color-mix(in srgb, var(--cyan) 60%, transparent);
+    background: color-mix(in srgb, var(--cyan) 12%, transparent);
+  }
+
+  .mini-world-globe {
+    position: relative;
+    display: grid;
+    height: 11.75rem;
+    place-items: center;
+  }
+
+  .mini-world-globe__halo {
+    position: absolute;
+    width: 9.5rem;
+    height: 9.5rem;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 62%),
+      radial-gradient(circle, color-mix(in srgb, var(--violet) 10%, transparent), transparent 70%);
+    filter: blur(10px);
+    opacity: 0.82;
+  }
+
+  .mini-world-globe__shell {
+    position: relative;
+    width: min(10rem, 72%);
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.45), transparent 24%),
+      radial-gradient(circle at 68% 74%, rgba(255, 255, 255, 0.16), transparent 35%),
+      rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset -18px -24px 36px rgba(0, 0, 0, 0.22),
+      inset 14px 18px 26px rgba(255, 255, 255, 0.12),
+      0 0 34px color-mix(in srgb, var(--cyan) 22%, transparent);
+  }
+
+  .mini-world-globe__shell::before {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    z-index: 3;
+    border-radius: inherit;
+    border-left: 1px solid rgba(255, 255, 255, 0.32);
+    transform: rotate(18deg);
+    pointer-events: none;
+  }
+
+  .mini-world-globe__shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.34), transparent 12%),
+      linear-gradient(120deg, rgba(255, 255, 255, 0.18), transparent 30%);
+    pointer-events: none;
+  }
+
+  .mini-world-globe__base {
+    position: absolute;
+    bottom: 0.7rem;
+    width: 6.5rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cyan) 22%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 24%, transparent);
+    opacity: 0.72;
+  }
+
+  .globe-preview {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    animation: globe-rotate 12s linear infinite;
+  }
+
+  .mini-world-globe--reduced .globe-preview {
+    animation: none;
+  }
+
+  .globe-preview span {
+    position: absolute;
+    display: block;
+  }
+
+  .globe-preview__sky {
+    inset: 0;
+  }
+
+  .globe-preview__horizon {
+    left: -22%;
+    right: -22%;
+    bottom: -8%;
+    height: 56%;
+    border-radius: 50% 50% 0 0;
+  }
+
+  .globe-preview__route {
+    left: 18%;
+    right: 18%;
+    bottom: 35%;
+    height: 0.18rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 0 18px currentColor;
+  }
+
+  .globe-preview__object {
+    z-index: 2;
+    background: currentColor;
+    box-shadow: 0 0 14px currentColor;
+  }
+
+  .globe-preview__object--a {
+    left: 25%;
+    bottom: 37%;
+    width: 0.78rem;
+    height: 1.35rem;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  .globe-preview__object--b {
+    right: 22%;
+    bottom: 34%;
+    width: 0.7rem;
+    height: 1.1rem;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    opacity: 0.72;
+  }
+
+  .globe-preview__object--c {
+    left: 48%;
+    bottom: 30%;
+    width: 1rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    opacity: 0.68;
+  }
+
+  .globe-preview__particle {
+    z-index: 2;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-radius: 999px;
+    background: currentColor;
+    animation: globe-particle 4.6s linear infinite;
+  }
+
+  .globe-preview__particle--a {
+    left: 24%;
+    top: 22%;
+  }
+
+  .globe-preview__particle--b {
+    left: 56%;
+    top: 18%;
+    animation-delay: -1.4s;
+  }
+
+  .globe-preview__particle--c {
+    left: 74%;
+    top: 32%;
+    animation-delay: -2.7s;
+  }
+
+  .globe-preview--winter {
+    color: #e7faff;
+  }
+
+  .globe-preview--winter .globe-preview__sky {
+    background:
+      radial-gradient(circle at 72% 20%, rgba(231, 250, 255, 0.42), transparent 16%),
+      linear-gradient(180deg, #07101f, #17314d);
+  }
+
+  .globe-preview--winter .globe-preview__horizon {
+    background: linear-gradient(180deg, #f1fbff, #8fb0c6);
+  }
+
+  .globe-preview--desert {
+    color: #ffd89a;
+  }
+
+  .globe-preview--desert .globe-preview__sky {
+    background:
+      radial-gradient(circle at 74% 20%, rgba(255, 196, 112, 0.56), transparent 18%),
+      linear-gradient(180deg, #2a1309, #8a4c24);
+  }
+
+  .globe-preview--desert .globe-preview__horizon {
+    background: linear-gradient(180deg, #d99a4e, #8f542d);
+  }
+
+  .globe-preview--desert .globe-preview__object--a,
+  .globe-preview--desert .globe-preview__object--b {
+    width: 0.32rem;
+    border-radius: 999px 999px 0 0;
+    clip-path: none;
+  }
+
+  .globe-preview--woods {
+    color: #d9ff8f;
+  }
+
+  .globe-preview--woods .globe-preview__sky {
+    background:
+      radial-gradient(circle at 70% 20%, rgba(137, 255, 181, 0.22), transparent 16%),
+      linear-gradient(180deg, #061811, #17422b);
+  }
+
+  .globe-preview--woods .globe-preview__horizon {
+    background: linear-gradient(180deg, #3b7d46, #17422b);
+  }
+
+  .globe-preview--ocean {
+    color: #c8fbff;
+  }
+
+  .globe-preview--ocean .globe-preview__sky {
+    background:
+      radial-gradient(circle at 72% 18%, rgba(103, 232, 249, 0.26), transparent 18%),
+      linear-gradient(180deg, #041827, #0b4b63);
+  }
+
+  .globe-preview--ocean .globe-preview__horizon {
+    background:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 14px),
+      linear-gradient(180deg, #1d9bb0, #0f4960);
+  }
+
+  .globe-preview--ocean .globe-preview__object--a,
+  .globe-preview--ocean .globe-preview__object--b {
+    height: 0.52rem;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  .globe-preview--spring {
+    color: #ffc4dd;
+  }
+
+  .globe-preview--spring .globe-preview__sky {
+    background:
+      radial-gradient(circle at 72% 20%, rgba(255, 220, 150, 0.32), transparent 18%),
+      linear-gradient(180deg, #261222, #456a3e);
+  }
+
+  .globe-preview--spring .globe-preview__horizon {
+    background: linear-gradient(180deg, #7fb45b, #4d7c44);
+  }
+
+  .treasure-map {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    color: var(--map-primary);
+    mix-blend-mode: screen;
+    transition: opacity 220ms ease;
+    mask-image: linear-gradient(to bottom, transparent, black 8%, black 84%, transparent);
+  }
+
+  .treasure-map::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background:
+      repeating-radial-gradient(ellipse at 30% 35%, color-mix(in srgb, var(--map-primary) 13%, transparent) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(18deg, color-mix(in srgb, var(--map-secondary) 9%, transparent) 0 1px, transparent 1px 58px);
+    opacity: 0.46;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .treasure-map__routes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 16px color-mix(in srgb, var(--map-glow) 20%, transparent));
+  }
+
+  .treasure-map__coordinates,
+  .treasure-map__unlocks {
+    position: absolute;
+    inset: 0;
+  }
+
+  .treasure-map__coordinates span {
+    position: absolute;
+    font-size: 0.68rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    opacity: 0.22;
+  }
+
+  .treasure-map__unlock {
+    position: absolute;
+    border: 1px solid color-mix(in srgb, var(--map-glow) 28%, transparent);
+    border-radius: 999px;
+    padding: 0.25rem 0.55rem;
+    background: color-mix(in srgb, var(--background) 62%, transparent);
+    box-shadow: 0 0 22px color-mix(in srgb, var(--map-glow) 12%, transparent);
+    font-size: 0.68rem;
+    font-weight: 650;
+    opacity: 0.08;
+    transform: translate(-50%, -50%) scale(0.92);
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease;
+  }
+
+  .treasure-map__unlock--active {
+    opacity: 0.34;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .treasure-map__compass {
+    position: absolute;
+    right: clamp(1rem, 5vw, 4.5rem);
+    bottom: clamp(6rem, 12vw, 10rem);
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
+    border-radius: 999px;
+    opacity: 0.34;
+    transition: transform 220ms ease;
+  }
+
+  .treasure-map__compass span,
+  .treasure-map__compass i {
+    position: absolute;
+    display: block;
+    background: currentColor;
+  }
+
+  .treasure-map__compass span:first-child {
+    left: 50%;
+    top: 12%;
+    width: 1px;
+    height: 76%;
+  }
+
+  .treasure-map__compass span:nth-child(2) {
+    left: 12%;
+    top: 50%;
+    width: 76%;
+    height: 1px;
+  }
+
+  .treasure-map__compass i {
+    left: 50%;
+    top: 8%;
+    width: 0.5rem;
+    height: 1.4rem;
+    clip-path: polygon(50% 0, 100% 100%, 50% 74%, 0 100%);
+    transform: translateX(-50%);
+  }
+
+  .treasure-map--parchment {
+    mix-blend-mode: lighten;
+  }
+
+  .treasure-map--nautical::before {
+    background:
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--map-primary) 9%, transparent) 0 1px, transparent 1px 46px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--map-secondary) 8%, transparent) 0 1px, transparent 1px 64px);
+  }
+
 }
 
 @media (max-width: 767px) {
@@ -510,6 +1053,49 @@ a {
       box-shadow:
         0 0 46px color-mix(in srgb, var(--cyan) 22%, transparent),
         inset 0 0 36px color-mix(in srgb, var(--ice) 16%, transparent);
+    }
+
+    .theme-globe-card {
+      min-height: 19rem;
+    }
+
+    .theme-globe-card__description {
+      min-height: auto;
+    }
+
+    .mini-world-globe {
+      height: 9.5rem;
+    }
+
+    .mini-world-globe__shell {
+      width: min(8rem, 70%);
+    }
+
+    .treasure-map__coordinates span,
+    .treasure-map__unlock {
+      font-size: 0.58rem;
+    }
+
+    .treasure-map__compass {
+      width: 4rem;
+      height: 4rem;
+      opacity: 0.22;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  @layer components {
+    .theme-globe-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  @layer components {
+    .theme-globe-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
 }
@@ -550,6 +1136,59 @@ a {
     opacity: 0;
   }
 }
+
+@keyframes globe-rotate {
+  from {
+    transform: rotate(0deg) scale(1.02);
+  }
+  to {
+    transform: rotate(360deg) scale(1.02);
+  }
+}
+
+@keyframes globe-particle {
+  from {
+    transform: translate3d(-0.15rem, 0, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.95;
+  }
+  to {
+    transform: translate3d(0.55rem, 3.6rem, 0);
+    opacity: 0;
+  }
+}
+
+
+@keyframes portal-sweep {
+  from {
+    transform: scale(0.72) rotate(-18deg);
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.44;
+  }
+  to {
+    transform: scale(1.32) rotate(22deg);
+    opacity: 0;
+  }
+}
+
+@keyframes portal-grid-drift {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
 
 ::-webkit-scrollbar {
   width: 10px;

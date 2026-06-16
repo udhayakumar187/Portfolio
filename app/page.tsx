@@ -2,6 +2,7 @@ import { AdventureCanvasMount } from "@/components/AdventureCanvasMount";
 import { AIPortal } from "@/components/AIPortal";
 import { ContactSummit } from "@/components/ContactSummit";
 import { CursorGlow } from "@/components/CursorGlow";
+import { MagicCursorLayer } from "@/components/cursor/MagicCursorLayer";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { HeroScene } from "@/components/HeroScene";
 import { JourneyMiniMap } from "@/components/JourneyMiniMap";
@@ -19,6 +20,7 @@ export default function Home() {
       <MotionProvider>
         <LoadingScreen />
         <CursorGlow />
+        <MagicCursorLayer />
         <AdventureCanvasMount />
         <SectionNav />
         <JourneyMiniMap />

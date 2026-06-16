@@ -3,6 +3,8 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { ThemeGlobeSelector } from "@/components/theme/ThemeGlobeSelector";
+import { experienceFeatures } from "@/data/experienceFeatures";
 import { themeOrder, themes, type ThemeId } from "@/data/themes";
 
 type ThemeSelectorProps = {
@@ -75,41 +77,45 @@ export function ThemeSelector({ currentThemeId, open, canClose, onClose, onSelec
               </p>
             </div>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-              {themeOrder.map((themeId, index) => {
-                const theme = themes[themeId];
-                const selected = currentThemeId === themeId;
+            {experienceFeatures.enableThemeGlobes ? (
+              <ThemeGlobeSelector currentThemeId={currentThemeId} firstButtonRef={firstButtonRef} reducedMotion={Boolean(prefersReducedMotion)} onSelect={onSelect} />
+            ) : (
+              <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                {themeOrder.map((themeId, index) => {
+                  const theme = themes[themeId];
+                  const selected = currentThemeId === themeId;
 
-                return (
-                  <motion.button
-                    ref={index === 0 ? firstButtonRef : undefined}
-                    type="button"
-                    key={theme.id}
-                    onClick={() => onSelect(theme.id)}
-                    className={`theme-card group min-h-[22rem] overflow-hidden rounded-lg p-4 text-left transition hover:-translate-y-1 focus:-translate-y-1 ${
-                      selected ? "theme-card-active" : ""
-                    }`}
-                    aria-label={`Enter ${theme.name} journey`}
-                    initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
-                    animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: index * 0.045, ease: "easeOut" }}
-                  >
-                    <div className={`theme-preview ${theme.previewClass}`} aria-hidden="true">
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                    <div className="relative z-10 mt-5">
-                      <h2 className="text-2xl font-semibold text-white">{theme.name}</h2>
-                      <p className="mt-3 min-h-24 text-sm leading-6 text-slate-300">{theme.description}</p>
-                      <span className="mt-6 inline-flex min-h-11 items-center rounded-full border border-white/15 bg-white/[0.06] px-4 text-sm font-semibold text-white transition group-hover:border-electric/60 group-hover:bg-electric/10">
-                        Enter Journey
-                      </span>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
+                  return (
+                    <motion.button
+                      ref={index === 0 ? firstButtonRef : undefined}
+                      type="button"
+                      key={theme.id}
+                      onClick={() => onSelect(theme.id)}
+                      className={`theme-card group min-h-[22rem] overflow-hidden rounded-lg p-4 text-left transition hover:-translate-y-1 focus:-translate-y-1 ${
+                        selected ? "theme-card-active" : ""
+                      }`}
+                      aria-label={`Enter ${theme.name} journey`}
+                      initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
+                      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: index * 0.045, ease: "easeOut" }}
+                    >
+                      <div className={`theme-preview ${theme.previewClass}`} aria-hidden="true">
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                      <div className="relative z-10 mt-5">
+                        <h2 className="text-2xl font-semibold text-white">{theme.name}</h2>
+                        <p className="mt-3 min-h-24 text-sm leading-6 text-slate-300">{theme.description}</p>
+                        <span className="mt-6 inline-flex min-h-11 items-center rounded-full border border-white/15 bg-white/[0.06] px-4 text-sm font-semibold text-white transition group-hover:border-electric/60 group-hover:bg-electric/10">
+                          Enter Journey
+                        </span>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </motion.div>
       ) : null}

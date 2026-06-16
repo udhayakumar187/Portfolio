@@ -4,12 +4,19 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Line, Stars } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { AmbientCreatures } from "@/components/ambient/AmbientCreatures";
+import { DynamicDayNightCycle } from "@/components/lighting/DynamicDayNightCycle";
 import { useJourneyMotion } from "@/components/MotionProvider";
+import { EngineeringConstellationSky } from "@/components/sky/EngineeringConstellationSky";
 import { SeasonalEnvironment } from "@/components/seasonal/SeasonalEnvironment";
 import { SeasonalParticles } from "@/components/seasonal/SeasonalParticles";
 import { SeasonalTransport } from "@/components/seasonal/SeasonalTransport";
+import { LivingTerrain } from "@/components/terrain/LivingTerrain";
 import { useTheme } from "@/components/ThemeProvider";
+import { TrailMemory } from "@/components/trails/TrailMemory";
 import type { ThemeConfig } from "@/data/themes";
+import { useActiveSection } from "@/hooks/useActiveSection";
+import { useMobileMode } from "@/hooks/useMobileMode";
 import { clamp01 } from "@/lib/animation";
 
 const checkpointPalette = ["#9adfff", "#67e8f9", "#7dd3fc", "#c4b5fd", "#a78bfa", "#e0f2fe"];
@@ -66,33 +73,6 @@ function Aurora() {
         opacity={0.3}
       />
     </group>
-  );
-}
-
-function Footprints({ curve }: { curve: THREE.CatmullRomCurve3 }) {
-  const marks = useMemo(() => {
-    return Array.from({ length: 22 }, (_, index) => {
-      const point = curve.getPoint(0.05 + index * 0.04);
-      const next = curve.getPoint(Math.min(0.98, 0.055 + index * 0.04));
-      const direction = next.sub(point).normalize();
-      const angle = Math.atan2(direction.x, direction.z);
-      const side = index % 2 ? -0.13 : 0.13;
-      return {
-        position: [point.x + Math.cos(angle) * side, 0.017, point.z - Math.sin(angle) * side] as [number, number, number],
-        rotation: [-Math.PI / 2, 0, -angle] as [number, number, number]
-      };
-    });
-  }, [curve]);
-
-  return (
-    <>
-      {marks.map((mark, index) => (
-        <mesh key={index} position={mark.position} rotation={mark.rotation}>
-          <circleGeometry args={[0.055, 10]} />
-          <meshBasicMaterial color="#b8d7ea" transparent opacity={0.38} />
-        </mesh>
-      ))}
-    </>
   );
 }
 
@@ -233,8 +213,10 @@ function Checkpoint({
 }
 
 function AdventureWorld() {
-  const { progressRef, activeStop, prefersReducedMotion } = useJourneyMotion();
+  const { progressRef, activeStop, prefersReducedMotion, normalizedScrollVelocityRef } = useJourneyMotion();
   const { theme } = useTheme();
+  const activeSection = useActiveSection();
+  const mobileMode = useMobileMode();
   const curve = useMemo(() => makeJourneyCurve(), []);
   const curvePoints = useMemo(() => curve.getPoints(160), [curve]);
   const [visibleProgress, setVisibleProgress] = useState(0.02);
@@ -246,6 +228,7 @@ function AdventureWorld() {
   const cameraTargetRef = useRef(new THREE.Vector3(-4.8, 5.6, 14));
   const lookAtTargetRef = useRef(new THREE.Vector3(-5.4, 0.8, 6.4));
   const desiredLookAtRef = useRef(new THREE.Vector3());
+  const constellationVisibilityRef = useRef(1);
   const visiblePoints = useMemo(() => {
     const safeProgress = Number.isFinite(visibleProgress) ? clamp01(visibleProgress) : 0.02;
     const count = Math.max(2, Math.floor(160 * safeProgress));
@@ -293,26 +276,50 @@ function AdventureWorld() {
 
   return (
     <>
-      <fog attach="fog" args={[theme.scene.fog, 8, 30]} />
-      <ambientLight intensity={0.52} color={theme.scene.ambient} />
-      <directionalLight position={[-4.5, 9, 4]} intensity={1.35} color={theme.scene.directional} castShadow />
-      <pointLight position={[-4, 3, 5]} intensity={1.55} color={theme.scene.accent} distance={12} />
+      <DynamicDayNightCycle
+        theme={theme}
+        progressRef={progressRef}
+        reducedMotion={prefersReducedMotion}
+        constellationVisibilityRef={constellationVisibilityRef}
+      />
       <Stars radius={55} depth={22} count={prefersReducedMotion ? 80 : theme.id === "desert" ? 320 : 460} factor={3.2} fade speed={0.15} />
+      <EngineeringConstellationSky
+        activeSection={activeSection}
+        reducedMotion={prefersReducedMotion}
+        theme={theme}
+        visibilityRef={constellationVisibilityRef}
+      />
+      <AmbientCreatures theme={theme} reducedMotion={prefersReducedMotion} mobileMode={mobileMode} />
       {theme.id === "winter" || theme.id === "ocean" ? <Aurora /> : null}
       <SeasonalParticles
         type={theme.scene.particle}
         color={theme.scene.particleColor}
         emissive={theme.scene.particleEmissive}
         reducedMotion={prefersReducedMotion}
+        scrollVelocityRef={normalizedScrollVelocityRef}
+        weather={theme.weather}
       />
 
-      <SeasonalEnvironment theme={theme} reducedMotion={prefersReducedMotion} />
+      <SeasonalEnvironment theme={theme} reducedMotion={prefersReducedMotion} scrollVelocityRef={normalizedScrollVelocityRef} />
+      <LivingTerrain
+        theme={theme}
+        positionRef={characterTargetRef}
+        velocityRef={normalizedScrollVelocityRef}
+        reducedMotion={prefersReducedMotion}
+        mobileMode={mobileMode}
+      />
 
       <Line points={curvePoints} color={theme.scene.pathBase} lineWidth={5.2} transparent opacity={0.56} />
       <Line points={curvePoints} color="#07101f" lineWidth={2.4} transparent opacity={0.4} />
       <Line points={curvePoints} color={theme.scene.pathGlow} lineWidth={1.2} transparent opacity={0.36} />
       <Line points={visiblePoints} color={theme.scene.pathCore} lineWidth={3} />
-      {theme.environmentType === "winter" ? <Footprints curve={curve} /> : null}
+      <TrailMemory
+        theme={theme}
+        positionRef={characterTargetRef}
+        velocityRef={normalizedScrollVelocityRef}
+        reducedMotion={prefersReducedMotion}
+        mobileMode={mobileMode}
+      />
 
       <Campfire position={[-5.6, 0.03, 7.5]} theme={theme} />
       <SeasonalTransport

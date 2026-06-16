@@ -2,16 +2,21 @@
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { MutableRefObject } from "react";
+import { useScrollVelocity } from "@/hooks/useScrollVelocity";
 import { stableActiveIndexFromProgress } from "@/lib/animation";
 
 type MotionContextValue = {
   progressRef: MutableRefObject<number>;
+  scrollVelocityRef: MutableRefObject<number>;
+  normalizedScrollVelocityRef: MutableRefObject<number>;
   activeStop: number;
   prefersReducedMotion: boolean;
 };
 
 const MotionContext = createContext<MotionContextValue>({
   progressRef: { current: 0 },
+  scrollVelocityRef: { current: 0 },
+  normalizedScrollVelocityRef: { current: 0 },
   activeStop: 0,
   prefersReducedMotion: false
 });
@@ -19,6 +24,7 @@ const MotionContext = createContext<MotionContextValue>({
 export function MotionProvider({ children }: { children: React.ReactNode }) {
   const progressRef = useRef(0);
   const activeStopRef = useRef(0);
+  const { velocityRef: scrollVelocityRef, normalizedVelocityRef: normalizedScrollVelocityRef } = useScrollVelocity();
   const [activeStop, setActiveStop] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -66,10 +72,12 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo(
     () => ({
       progressRef,
+      scrollVelocityRef,
+      normalizedScrollVelocityRef,
       activeStop,
       prefersReducedMotion
     }),
-    [activeStop, prefersReducedMotion]
+    [activeStop, normalizedScrollVelocityRef, prefersReducedMotion, scrollVelocityRef]
   );
 
   return <MotionContext.Provider value={value}>{children}</MotionContext.Provider>;

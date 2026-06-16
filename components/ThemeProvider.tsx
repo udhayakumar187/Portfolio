@@ -1,8 +1,15 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { isThemeId, themes, type ThemeConfig, type ThemeId } from "@/data/themes";
+import { SeasonPortalTransition } from "@/components/transitions/SeasonPortalTransition";
 import { ThemeSelector } from "@/components/ThemeSelector";
+import {
+  createThemeTransition,
+  transitionCommitDelay,
+  transitionEndDelay,
+  type ActiveThemeTransition
+} from "@/lib/themeTransition";
 
 const STORAGE_KEY = "ukm-journey-theme";
 
@@ -29,6 +36,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [hasSelectedTheme, setHasSelectedTheme] = useState(false);
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [activeTransition, setActiveTransition] = useState<ActiveThemeTransition | null>(null);
+  const transitionTimersRef = useRef<number[]>([]);
+  const suppressQuerySyncRef = useRef(false);
+
+  const clearTransitionTimers = useCallback(() => {
+    transitionTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    transitionTimersRef.current = [];
+  }, []);
+
+  const setThemeQuery = useCallback((nextThemeId: ThemeId) => {
+    suppressQuerySyncRef.current = true;
+    updateThemeQuery(nextThemeId);
+    suppressQuerySyncRef.current = false;
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -56,6 +78,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotion = () => setPrefersReducedMotion(motionQuery.matches);
+
+    syncMotion();
+    motionQuery.addEventListener("change", syncMotion);
+
+    return () => motionQuery.removeEventListener("change", syncMotion);
+  }, []);
+
+  useEffect(() => {
+    return () => clearTransitionTimers();
+  }, [clearTransitionTimers]);
+
+  useEffect(() => {
     const syncThemeFromQuery = () => {
       const queryTheme = new URLSearchParams(window.location.search).get("theme");
 
@@ -63,9 +99,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      clearTransitionTimers();
+      setActiveTransition(null);
       setThemeId((currentThemeId) => (currentThemeId === queryTheme ? currentThemeId : queryTheme));
       setHasSelectedTheme(true);
       window.localStorage.setItem(STORAGE_KEY, queryTheme);
+    };
+    let querySyncFrame = 0;
+
+    const scheduleThemeSyncFromQuery = () => {
+      if (suppressQuerySyncRef.current) {
+        return;
+      }
+
+      if (querySyncFrame) {
+        window.cancelAnimationFrame(querySyncFrame);
+      }
+
+      querySyncFrame = window.requestAnimationFrame(() => {
+        querySyncFrame = 0;
+        syncThemeFromQuery();
+      });
     };
 
     const originalPushState = window.history.pushState.bind(window.history);
@@ -73,22 +127,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     window.history.pushState = (...args) => {
       originalPushState(...args);
-      syncThemeFromQuery();
+      scheduleThemeSyncFromQuery();
     };
 
     window.history.replaceState = (...args) => {
       originalReplaceState(...args);
-      syncThemeFromQuery();
+      scheduleThemeSyncFromQuery();
     };
 
-    window.addEventListener("popstate", syncThemeFromQuery);
+    window.addEventListener("popstate", scheduleThemeSyncFromQuery);
 
     return () => {
       window.history.pushState = originalPushState;
       window.history.replaceState = originalReplaceState;
-      window.removeEventListener("popstate", syncThemeFromQuery);
+      window.removeEventListener("popstate", scheduleThemeSyncFromQuery);
+
+      if (querySyncFrame) {
+        window.cancelAnimationFrame(querySyncFrame);
+      }
     };
-  }, []);
+  }, [clearTransitionTimers]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -100,12 +158,32 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [themeId]);
 
   const selectTheme = useCallback((nextThemeId: ThemeId) => {
-    setThemeId(nextThemeId);
+    clearTransitionTimers();
     setHasSelectedTheme(true);
     setIsSelectorOpen(false);
-    window.localStorage.setItem(STORAGE_KEY, nextThemeId);
-    updateThemeQuery(nextThemeId);
-  }, []);
+
+    if (nextThemeId === themeId) {
+      window.localStorage.setItem(STORAGE_KEY, nextThemeId);
+      setThemeQuery(nextThemeId);
+      setActiveTransition(null);
+      return;
+    }
+
+    const nextTransition = createThemeTransition(themeId, nextThemeId);
+    setActiveTransition(nextTransition);
+
+    const commitTimer = window.setTimeout(() => {
+      setThemeId(nextThemeId);
+      window.localStorage.setItem(STORAGE_KEY, nextThemeId);
+      setThemeQuery(nextThemeId);
+    }, transitionCommitDelay(nextTransition.durationMs, prefersReducedMotion));
+
+    const endTimer = window.setTimeout(() => {
+      setActiveTransition(null);
+    }, transitionEndDelay(nextTransition.durationMs, prefersReducedMotion));
+
+    transitionTimersRef.current = [commitTimer, endTimer];
+  }, [clearTransitionTimers, prefersReducedMotion, setThemeQuery, themeId]);
 
   const openThemeSelector = useCallback(() => setIsSelectorOpen(true), []);
   const closeThemeSelector = useCallback(() => {
@@ -139,6 +217,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           onSelect={selectTheme}
         />
       ) : null}
+      <SeasonPortalTransition transition={activeTransition} />
     </ThemeContext.Provider>
   );
 }

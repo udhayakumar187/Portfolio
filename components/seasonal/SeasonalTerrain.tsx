@@ -2,15 +2,17 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import type { MutableRefObject } from "react";
 import * as THREE from "three";
 import type { ThemeConfig } from "@/data/themes";
 
 type SeasonalTerrainProps = {
   theme: ThemeConfig;
   reducedMotion: boolean;
+  scrollVelocityRef?: MutableRefObject<number>;
 };
 
-function OceanWater({ theme, reducedMotion }: SeasonalTerrainProps) {
+function OceanWater({ theme, reducedMotion, scrollVelocityRef }: SeasonalTerrainProps) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame(({ clock }) => {
@@ -18,8 +20,9 @@ function OceanWater({ theme, reducedMotion }: SeasonalTerrainProps) {
       return;
     }
 
-    meshRef.current.position.y = -0.065 + Math.sin(clock.elapsedTime * 0.7) * 0.012;
-    meshRef.current.rotation.z = Math.sin(clock.elapsedTime * 0.18) * 0.01;
+    const velocity = scrollVelocityRef?.current ?? 0;
+    meshRef.current.position.y = -0.065 + Math.sin(clock.elapsedTime * (0.7 + velocity * 0.5)) * (0.012 + velocity * 0.018);
+    meshRef.current.rotation.z = Math.sin(clock.elapsedTime * (0.18 + velocity * 0.16)) * (0.01 + velocity * 0.012);
   });
 
   if (theme.environmentType !== "ocean") {
@@ -40,7 +43,7 @@ function OceanWater({ theme, reducedMotion }: SeasonalTerrainProps) {
   );
 }
 
-export function SeasonalTerrain({ theme, reducedMotion }: SeasonalTerrainProps) {
+export function SeasonalTerrain({ theme, reducedMotion, scrollVelocityRef }: SeasonalTerrainProps) {
   const isOcean = theme.environmentType === "ocean";
 
   return (
@@ -53,7 +56,7 @@ export function SeasonalTerrain({ theme, reducedMotion }: SeasonalTerrainProps) 
         <planeGeometry args={[34, 34, 16, 16]} />
         <meshStandardMaterial color={theme.scene.terrainOverlay} transparent opacity={isOcean ? 0.24 : 0.13} roughness={0.7} />
       </mesh>
-      <OceanWater theme={theme} reducedMotion={reducedMotion} />
+      <OceanWater theme={theme} reducedMotion={reducedMotion} scrollVelocityRef={scrollVelocityRef} />
     </>
   );
 }
