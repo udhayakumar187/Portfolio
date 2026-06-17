@@ -45,7 +45,7 @@ export function ThemeSelector({ currentThemeId, open, canClose, onClose, onSelec
     <AnimatePresence>
       {open ? (
         <motion.div
-          className="fixed inset-0 z-[95] overflow-y-auto bg-ink/94 px-4 py-6 backdrop-blur-2xl sm:px-6"
+          className="fixed inset-0 z-[95] overflow-y-auto bg-ink/94 px-4 py-5 backdrop-blur-2xl sm:px-6 sm:py-6"
           role="dialog"
           aria-modal="true"
           aria-labelledby="theme-selector-title"
@@ -55,24 +55,24 @@ export function ThemeSelector({ currentThemeId, open, canClose, onClose, onSelec
           transition={{ duration: 0.35, ease: "easeOut" }}
         >
           <div className="pointer-events-none fixed inset-0 mesh-layer opacity-70" aria-hidden="true" />
-          <div className="relative mx-auto flex min-h-[calc(100svh-3rem)] w-full max-w-7xl flex-col justify-center">
+          <div className="relative mx-auto flex min-h-[calc(100svh-2.5rem)] w-full max-w-7xl flex-col justify-start py-3 sm:min-h-[calc(100svh-3rem)] sm:justify-center sm:py-0">
             {canClose ? (
               <button
                 type="button"
                 onClick={onClose}
-                className="absolute right-0 top-0 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/[0.05] text-white backdrop-blur-xl transition hover:border-electric/60 hover:bg-electric/10"
+                className="fixed right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/[0.05] text-white backdrop-blur-xl transition hover:border-electric/60 hover:bg-electric/10 sm:absolute sm:right-0 sm:top-0"
                 aria-label="Close theme selector"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
               </button>
             ) : null}
 
-            <div className="max-w-3xl">
+            <div className="max-w-3xl pr-12 sm:pr-0">
               <p className="mb-3 text-sm font-semibold text-electric">Engineering Journey</p>
-              <h1 id="theme-selector-title" className="text-4xl font-semibold text-white sm:text-6xl">
+              <h1 id="theme-selector-title" className="text-3xl font-semibold text-white sm:text-6xl">
                 Choose Your Journey
               </h1>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:mt-5 sm:text-lg sm:leading-8">
                 Explore my engineering journey through a world that matches your mood.
               </p>
             </div>

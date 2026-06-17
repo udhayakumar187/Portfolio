@@ -570,14 +570,21 @@ a {
 
   .theme-globe-grid {
     display: grid;
+    width: 100%;
+    min-width: 0;
     gap: 1rem;
-    margin-top: 2.5rem;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    margin-top: 1.5rem;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .theme-globe-card {
     position: relative;
-    min-height: 23rem;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 18.5rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: 0.5rem;
@@ -619,9 +626,10 @@ a {
     position: relative;
     z-index: 2;
     display: flex;
-    min-height: 11rem;
+    min-height: auto;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    min-width: 0;
   }
 
   .theme-globe-card__name,
@@ -631,29 +639,29 @@ a {
   }
 
   .theme-globe-card__name {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 650;
     color: white;
   }
 
   .theme-globe-card__description {
-    min-height: 5.9rem;
-    margin-top: 0.75rem;
+    min-height: auto;
+    margin-top: 0.55rem;
     color: rgb(203 213 225);
     font-size: 0.875rem;
-    line-height: 1.55rem;
+    line-height: 1.5rem;
   }
 
   .theme-globe-card__cta {
     width: fit-content;
-    min-height: 2.75rem;
-    margin-top: 1rem;
+    min-height: 2.5rem;
+    margin-top: 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 999px;
-    padding: 0.7rem 1rem;
+    padding: 0.62rem 0.95rem;
     background: rgba(255, 255, 255, 0.06);
     color: white;
-    font-size: 0.875rem;
+    font-size: 0.82rem;
     font-weight: 650;
     transition:
       border-color 180ms ease,
@@ -669,14 +677,16 @@ a {
   .mini-world-globe {
     position: relative;
     display: grid;
-    height: 11.75rem;
+    width: 100%;
+    min-width: 0;
+    height: 9.75rem;
     place-items: center;
   }
 
   .mini-world-globe__halo {
     position: absolute;
-    width: 9.5rem;
-    height: 9.5rem;
+    width: 8rem;
+    height: 8rem;
     border-radius: 999px;
     background:
       radial-gradient(circle, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 62%),
@@ -687,7 +697,7 @@ a {
 
   .mini-world-globe__shell {
     position: relative;
-    width: min(10rem, 72%);
+    width: min(8.3rem, 58vw);
     aspect-ratio: 1;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.28);
@@ -727,8 +737,8 @@ a {
 
   .mini-world-globe__base {
     position: absolute;
-    bottom: 0.7rem;
-    width: 6.5rem;
+    bottom: 0.35rem;
+    width: 5.4rem;
     height: 0.32rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--cyan) 22%, transparent);
@@ -1056,7 +1066,7 @@ a {
     }
 
     .theme-globe-card {
-      min-height: 19rem;
+      min-height: 18.5rem;
     }
 
     .theme-globe-card__description {
@@ -1064,11 +1074,11 @@ a {
     }
 
     .mini-world-globe {
-      height: 9.5rem;
+      height: 9.75rem;
     }
 
     .mini-world-globe__shell {
-      width: min(8rem, 70%);
+      width: min(8.3rem, 58vw);
     }
 
     .treasure-map__coordinates span,
@@ -1087,7 +1097,56 @@ a {
 @media (min-width: 768px) {
   @layer components {
     .theme-globe-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+
+    .theme-globe-card {
+      display: block;
+      min-height: 23rem;
+      padding: 1rem;
+    }
+
+    .theme-globe-card__content {
+      min-height: 11rem;
+      justify-content: flex-end;
+    }
+
+    .theme-globe-card__name {
+      font-size: 1.5rem;
+    }
+
+    .theme-globe-card__description {
+      min-height: 5.9rem;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.55rem;
+    }
+
+    .theme-globe-card__cta {
+      min-height: 2.75rem;
+      margin-top: 1rem;
+      padding: 0.7rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .mini-world-globe {
+      height: 11.75rem;
+    }
+
+    .mini-world-globe__halo {
+      width: 9.5rem;
+      height: 9.5rem;
+    }
+
+    .mini-world-globe__shell {
+      width: min(10rem, 72%);
+    }
+
+    .mini-world-globe__base {
+      bottom: 0.7rem;
+      width: 6.5rem;
     }
   }
 }
@@ -1095,7 +1154,7 @@ a {
 @media (min-width: 1280px) {
   @layer components {
     .theme-globe-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
     }
   }
 }
