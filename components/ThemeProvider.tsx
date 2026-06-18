@@ -31,6 +31,17 @@ function updateThemeQuery(themeId: ThemeId) {
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+function scrollPageToStart() {
+  const resetScroll = () => {
+    window.scrollTo({ left: 0, top: 0, behavior: "auto" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
+  resetScroll();
+  window.requestAnimationFrame(resetScroll);
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeId, setThemeId] = useState<ThemeId>("winter");
   const [hasSelectedTheme, setHasSelectedTheme] = useState(false);
@@ -161,6 +172,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     clearTransitionTimers();
     setHasSelectedTheme(true);
     setIsSelectorOpen(false);
+    scrollPageToStart();
 
     if (nextThemeId === themeId) {
       window.localStorage.setItem(STORAGE_KEY, nextThemeId);
