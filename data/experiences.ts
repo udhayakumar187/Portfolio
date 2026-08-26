@@ -90,6 +90,37 @@ export const journeyExperiences: JourneyExperience[] = [
     ]
   },
   {
+    id: "zimmer-biomet",
+    company: "Zimmer Biomet",
+    role: "Senior Web Developer",
+    duration: "2025 - Present",
+    locationTheme: "Medical Innovation Hub",
+    story:
+      "Working on cloud-native healthcare platforms, surgical robotics integration, medical device software, and AI-assisted clinical workflows. Contributing across backend microservices, frontend applications, cloud infrastructure, and regulatory-compliant software delivery.",
+    contributions: [
+      "Building scalable healthcare platform capabilities for surgical and medical device ecosystems.",
+      "Designing cloud-native architectures with AWS/Azure services and event-driven patterns.",
+      "Ensuring regulatory compliance, test automation, CI/CD, and production reliability for medical devices."
+    ],
+    tech: [
+      "Java",
+      "Spring Boot",
+      "Angular",
+      "AWS",
+      "Azure",
+      "REST APIs",
+      "GraphQL",
+      "Kubernetes",
+      "Docker",
+      "PostgreSQL",
+      "Kafka",
+      "OAuth2",
+      "JWT",
+      "GitHub Actions",
+      "GitLab CI"
+    ]
+  },
+  {
     id: "ai-future",
     company: "AI Future",
     role: "Applied Exploration",
