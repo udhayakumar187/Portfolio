@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     default: "Udhaya Kumar Mallikaarjunan | Software Technologist",
     template: "%s | Udhaya Kumar Mallikaarjunan"
   },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   description:
     "Software Technologist specializing in full-stack development, cloud-native healthcare platforms, distributed systems, and AI-assisted software engineering.",
   keywords: [
