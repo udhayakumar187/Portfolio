@@ -76,15 +76,14 @@ export function CinematicPortrait() {
     >
       <div className="relative w-full overflow-hidden">
         <motion.img
-          src="/images/udhaya-hologram.webp"
-          alt="Udhaya represented as a glowing cyan digital wireframe hologram"
-          className="relative z-0 block h-auto w-full select-none object-contain"
+          src="/images/udhaya-cutout.png"
+          alt="Udhaya Kumar, isolated from the original photograph"
+          className="relative z-0 block h-auto w-full select-none object-contain drop-shadow-[0_0_28px_rgba(34,211,238,0.22)]"
           draggable={false}
           animate={reducedMotion ? undefined : { filter: ["brightness(0.96) saturate(1.05)", "brightness(1.08) saturate(1.2)", "brightness(0.96) saturate(1.05)"] }}
           transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
           loading="eager"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent lg:from-ink/30" />
         <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-10 h-full w-full" aria-hidden="true" />
         <motion.div
           className="pointer-events-none absolute inset-x-[8%] top-0 z-20 h-px bg-gradient-to-r from-transparent via-cyan-100 to-transparent shadow-[0_0_18px_4px_rgba(103,232,249,.55)]"
