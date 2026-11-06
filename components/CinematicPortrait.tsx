@@ -82,7 +82,7 @@ export function CinematicPortrait() {
           draggable={false}
           animate={reducedMotion ? undefined : { filter: ["brightness(0.96) saturate(1.05)", "brightness(1.08) saturate(1.2)", "brightness(0.96) saturate(1.05)"] }}
           transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-          priority
+          loading="eager"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent lg:from-ink/30" />
         <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-10 h-full w-full" aria-hidden="true" />
