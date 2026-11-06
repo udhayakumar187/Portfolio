@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTheme } from "@/components/ThemeProvider";
 
 /** Holographic portrait artwork with lightweight scan and particle overlays. */
 export function CinematicPortrait() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number | null>(null);
   const reducedMotion = useReducedMotion();
+  const { themeId } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -76,7 +78,7 @@ export function CinematicPortrait() {
     >
       <div className="relative w-full overflow-hidden">
         <motion.img
-          src="/images/udhaya-cutout.png"
+          src={`/images/udhaya-wireframe-${themeId}.png`}
           alt="Udhaya Kumar, isolated from the original photograph"
           className="relative z-0 block h-auto w-full select-none object-contain drop-shadow-[0_0_28px_rgba(34,211,238,0.22)]"
           draggable={false}
