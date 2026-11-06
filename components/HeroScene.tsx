@@ -3,6 +3,7 @@
 import { ArrowDown, FileText, Mail, MapPin } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
+import { CinematicPortrait } from "@/components/CinematicPortrait";
 import { profile } from "@/data/profile";
 
 export function HeroScene() {
@@ -10,14 +11,14 @@ export function HeroScene() {
   const { theme } = useTheme();
 
   return (
-    <section id="hero" aria-labelledby="hero-title" className="relative flex min-h-[100svh] items-center pt-28">
+    <section id="hero" aria-labelledby="hero-title" className="relative flex min-h-[100svh] items-center overflow-hidden pt-28">
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/35 via-ink/50 to-ink/85 lg:bg-gradient-to-r lg:from-ink/86 lg:via-ink/44 lg:to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/35 via-ink/50 to-ink/85 lg:bg-gradient-to-r lg:from-ink/95 lg:via-ink/75 lg:to-ink/10"
         aria-hidden="true"
       />
-      <div className="section-shell relative z-10">
+      <div className="section-shell relative z-10 grid w-full items-center gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-2">
         <motion.div
-          className="max-w-4xl"
+          className="relative z-20 max-w-4xl"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -63,6 +64,10 @@ export function HeroScene() {
             </a>
           </div>
         </motion.div>
+
+        <div className="relative z-10 min-w-0 lg:min-h-[34rem]">
+          <CinematicPortrait />
+        </div>
       </div>
     </section>
   );
